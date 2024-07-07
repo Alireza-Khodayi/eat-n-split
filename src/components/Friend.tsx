@@ -3,10 +3,15 @@ import { Button } from './UI';
 
 interface IProps {
   friend: IFriend;
+  onSelection: (friend: IFriend) => void;
+  selectedFriend: IFriend | null;
 }
-export function Friend({ friend }: IProps) {
+
+export function Friend({ friend, onSelection, selectedFriend }: IProps) {
+  const isSelected = selectedFriend?.id === friend.id;
+
   return (
-    <li>
+    <li className={isSelected ? 'selected' : ''}>
       <img src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
       {friend.balance < 0 && (
@@ -21,7 +26,13 @@ export function Friend({ friend }: IProps) {
         </p>
       )}
 
-      <Button>Select</Button>
+      <Button
+        onClick={() => {
+          onSelection(friend);
+        }}
+      >
+        {isSelected ? 'Close' : 'Select'}
+      </Button>
     </li>
   );
 }
